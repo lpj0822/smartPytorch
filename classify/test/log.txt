@@ -1,0 +1,38 @@
+2019-01-12 15:43:42 - INFO - created model with configuration : {'trainList': '/home/wfw/data/VOCdevkit/cifar10/train_data.txt', 'maxEpoches': 300, 'valList': '/home/wfw/data/VOCdevkit/cifar10/test_data.txt', 'train_batch_size': 256, 'test_batch_size': 100}
+2019-01-12 15:43:42 - INFO - Train data num: 50000
+2019-01-12 15:43:42 - INFO - Test data num: 10000
+2019-01-12 15:43:44 - INFO - ------------------------------------------------------------------------------------------------------------------------------------------------------
+2019-01-12 15:43:44 - INFO - Layer                           Kernel Shape          Stride        Gradient              Output Shape         # Params (K)      # Mult-Adds (M)
+2019-01-12 15:43:44 - INFO - ======================================================================================================================================================
+2019-01-12 15:43:44 - INFO - 0_Data          	                   -               -           False          [1, 3, 224, 224]                    _                    _
+2019-01-12 15:43:44 - INFO - 1_Conv2d        	       [3, 32, 3, 3]          [2, 2]            True         [1, 32, 112, 112]                 0.86                10.84
+2019-01-12 15:43:44 - INFO - 2_BatchNorm2d   	                [32]               -            True         [1, 32, 112, 112]                 0.06                 0.00
+2019-01-12 15:43:44 - INFO - 3_LeakyReLU     	                   -               -               -         [1, 32, 112, 112]                    -                    -
+2019-01-12 15:43:44 - INFO - 4_Conv2d        	      [32, 64, 3, 3]          [2, 2]            True           [1, 64, 56, 56]                18.43                57.80
+2019-01-12 15:43:44 - INFO - 5_BatchNorm2d   	                [64]               -            True           [1, 64, 56, 56]                 0.13                 0.00
+2019-01-12 15:43:44 - INFO - 6_LeakyReLU     	                   -               -               -           [1, 64, 56, 56]                    -                    -
+2019-01-12 15:43:44 - INFO - 7_Conv2d        	     [64, 128, 3, 3]          [2, 2]            True          [1, 128, 28, 28]                73.73                57.80
+2019-01-12 15:43:44 - INFO - 8_BatchNorm2d   	               [128]               -            True          [1, 128, 28, 28]                 0.26                 0.00
+2019-01-12 15:43:44 - INFO - 9_LeakyReLU     	                   -               -               -          [1, 128, 28, 28]                    -                    -
+2019-01-12 15:43:44 - INFO - 10_Conv2d       	    [128, 256, 3, 3]          [2, 2]            True          [1, 256, 14, 14]               294.91                57.80
+2019-01-12 15:43:44 - INFO - 11_BatchNorm2d  	               [256]               -            True          [1, 256, 14, 14]                 0.51                 0.00
+2019-01-12 15:43:44 - INFO - 12_LeakyReLU    	                   -               -               -          [1, 256, 14, 14]                    -                    -
+2019-01-12 15:43:44 - INFO - 13_Conv2d       	    [256, 512, 3, 3]          [2, 2]            True            [1, 512, 7, 7]             1,179.65                57.80
+2019-01-12 15:43:44 - INFO - 14_BatchNorm2d  	               [512]               -            True            [1, 512, 7, 7]                 1.02                 0.00
+2019-01-12 15:43:44 - INFO - 15_LeakyReLU    	                   -               -               -            [1, 512, 7, 7]                    -                    -
+2019-01-12 15:43:44 - INFO - 16_AdaptiveAvgPool2d 	                   -               -               -            [1, 512, 1, 1]                    -                    -
+2019-01-12 15:43:44 - INFO - 17_Linear       	           [512, 10]               -            True                   [1, 10]                 5.13                 0.01
+2019-01-12 15:43:44 - INFO - ======================================================================================================================================================
+2019-01-12 15:43:44 - INFO - # Params:    1,574.70K
+2019-01-12 15:43:44 - INFO - # Mult-Adds: 242.06M
+2019-01-12 15:43:44 - INFO - # GFLOPS:    0.0000G
+2019-01-12 15:43:44 - INFO - ------------------------------------------------------------------------------------------------------------------------------------------------------
+2019-01-12 15:43:44 - INFO - Could not load matplotlib icon: can't use "pyimage10" as iconphoto: not a photo image
+2019-01-12 15:43:44 - INFO - Could not load matplotlib icon: can't use "pyimage19" as iconphoto: not a photo image
+2019-01-12 15:43:44 - INFO - Could not load matplotlib icon: can't use "pyimage28" as iconphoto: not a photo image
+2019-01-12 15:43:44 - INFO - Could not load matplotlib icon: can't use "pyimage37" as iconphoto: not a photo image
+2019-01-12 15:43:44 - INFO - OPTIMIZER - setting method = SGD
+2019-01-12 15:43:44 - INFO - OPTIMIZER - group 0 setting momentum = 0.9
+2019-01-12 15:43:44 - INFO - OPTIMIZER - group 0 setting weight_decay = 0.0005
+2019-01-12 15:43:44 - INFO - OPTIMIZER - group 0 setting lr = 0.001
+2019-01-12 15:43:48 - INFO - TRAINING - Epoch: [0][0/196]	Time 4.135 (4.135)	Data 0.081 (0.081)	LR: [0.0010000/NULL]	Loss 2.3541 (2.3541)	Prec@1 7.422 (7.422)	Prec@5 44.922 (44.922)
