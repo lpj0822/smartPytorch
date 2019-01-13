@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 
 from modules.basic_module import *
+from modules import *
 from src.utils import *
 from src.loss import *
 import arch.config as config
@@ -98,6 +99,14 @@ def create_modules(module_defs):
             filters = output_filters[int(module_def['from'])]
             modules.add_module('skip_%d' % i, EmptyLayer())
 
+        elif module_def['type'] == 'basemodel':
+            modeltype = str(module_def['modeltype'])
+            basemodel = eval(modeltype)()
+            for m in basemodel.modules():
+                if isinstance(m, nn.Conv2d):
+                    filters = m.out_channels
+            modules.add_module('basemodel_%d' % i, basemodel)
+
         # Register module list and number of output filters
         module_list.append(modules)
         output_filters.append(filters)
@@ -117,7 +126,7 @@ class Net(nn.Module):
         loss_outputs = {}
 
         for i, (module_def, module) in enumerate(zip(self.module_defs, self.module_list)):
-            if module_def['type'] in ['basicConv', 'pool', 'innerProduct']:
+            if module_def['type'] in ['basicConv', 'pool', 'innerProduct', 'basemodel']:
                 x = module(x)
             elif module_def['type'] == 'route':
                 layer_i = [int(x) for x in module_def['layers'].split(',')]
@@ -142,20 +151,15 @@ def test():
     #params = parse_data_config()
     #print(params)
 
-    model = Net("arch/test.cfg")
+    model = Net("arch/vgg16.cfg")
     if len(config.CUDA_DEVICE) > 1:
         logging.info('Using {} GPUS'.format(len(config.CUDA_DEVICE)))
         model = nn.DataParallel(model, device_ids=config.CUDA_DEVICE)
     model.cuda().train()
 
-    pic = hl.build_graph(model, torch.zeros([1, 3, 224, 224]).cuda())
-    pic.save("./model")
-
-    x = torch.from_numpy(np.random.rand(4, 3, 224, 224))
-    y = torch.ones(4)
+    x = torch.from_numpy(np.random.rand(4, 3, 32, 32))
     x = Variable(x.type(torch.FloatTensor).cuda())
-    y = Variable(y.type(torch.LongTensor).cuda())
-    ys = model(x, y)
+    ys = model(x)
     print(ys)
 
 if __name__ == "__main__":

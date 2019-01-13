@@ -1,4 +1,4 @@
-import random
+import random, math
 import os, cv2, shutil
 import numpy as np
 import torch
@@ -99,7 +99,7 @@ def summary(model, hyperparams, save_path, *args, **kwargs):
             hooks.append(module.register_forward_hook(hook))
 
     hooks = []
-    x = torch.zeros((1, int(hyperparams['channels']), int(hyperparams['height']), int(hyperparams['width'])))
+    x = torch.zeros((config.train_batch_size, int(hyperparams['channels']), int(hyperparams['height']), int(hyperparams['width'])))
     if torch.cuda.is_available():
         input = Variable(x.type(torch.cuda.FloatTensor), requires_grad=False)
     else:
@@ -151,13 +151,14 @@ def summary(model, hyperparams, save_path, *args, **kwargs):
     logging.info("-" * 150)
     #draw_img_classifier_to_file(model, os.path.join(save_path, 'model.png'), Variable(x.type(torch.FloatTensor), requires_grad=False))
 
-def weights_init_normal(m):
-    classname = m.__class__.__name__
-    if classname.find('Conv') != -1:
-        torch.nn.init.normal_(m.weight.data, 0.0, 0.03)
-    elif classname.find('BatchNorm2d') != -1:
-        torch.nn.init.normal_(m.weight.data, 1.0, 0.03)
-        torch.nn.init.constant_(m.bias.data, 0.0)
+def weights_init_normal(model):
+    for m in model.modules():
+        if isinstance(m, nn.Conv2d):
+            n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+            m.weight.data.normal_(0, math.sqrt(2. / n))
+        elif isinstance(m, nn.BatchNorm2d):
+            m.weight.data.fill_(1)
+            m.bias.data.zero_()
 
 def xyxy2xywh(x):  # Convert bounding box format from [x1, y1, x2, y2] to [x, y, w, h]
     y = torch.zeros(x.shape) if x.dtype is torch.float32 else np.zeros(x.shape)
@@ -978,9 +979,10 @@ def multiLrMethod(model, hyperparams):
             stopType = v
     if stopLayer != "data":
         if stopType == "finetune":
+            print(stopLayer)
             for name, p in model.named_parameters():
                 #for layerName in stopLayer:
-                if name.split('.')[3] == stopLayer:
+                if stopLayer in name:
                     p.requires_grad = True
                     break
                 else:
@@ -993,7 +995,7 @@ def multiLrMethod(model, hyperparams):
             base_params = []
             for name, p in model.named_parameters():
                 #for layerName in stopLayer:
-                if name.split('.')[3] != stopLayer:
+                if stopLayer in name:
                     base_params.append(p)
                 else:
                     break
@@ -1014,7 +1016,7 @@ def multiLrMethod(model, hyperparams):
             layer_i = 0
             for name, p in model.named_parameters():
                 #for layerName in stopLayer:
-                if name.split('.')[3] == stopLayer:
+                if stopLayer in name:
                     break
                 #elif name.split('.')[5] == "bn" in name and name.split('.')[6] == "weight":
                 elif "bn" in name and "weight" in name:

@@ -4,7 +4,7 @@ import torchvision.transforms as transforms
 task = "classify"
 
 # select architecture
-cfg = "arch/test.cfg"
+cfg = "arch/vgg16.cfg"
 data_config_path = "cfg/wissenperson.data"
 
 # data_transform
@@ -45,7 +45,6 @@ learning_policy = {0: {'policy': 'multistep',
                    #    'power': 0.9} }
 
 # dataSet
-imgSize = [640, 352]
 trainList = "/home/wfw/data/VOCdevkit/cifar10/train_data.txt"
 valList = "/home/wfw/data/VOCdevkit/cifar10/test_data.txt"
 valLabelPath = "/home/wfw/data/VOCdevkit/BerkeleyDet/Annotations/"

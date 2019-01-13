@@ -55,6 +55,7 @@ def run_task():
 
     # set gradient
     model, optimizer = multiLrMethod(model, hyperparams)
+    model.apply(weights_init_normal)
 
     # summary the model
     summary(model, hyperparams, save_path)
@@ -63,10 +64,10 @@ def run_task():
     logger = Logger(os.path.join(save_path, "logs"))
 
     # bn_param_visual
-    viz = vis_bn(model)
+    #viz = vis_bn(model)
 
     if config.task == "classify":
-        run_cls = run_classify(model, params, hyperparams, optimizer, trainloader, valloader, save_path, logger, viz)
+        run_cls = run_classify(model, params, hyperparams, optimizer, trainloader, valloader, save_path, logger)#, viz)
         run_cls.run()
 
 if __name__ == "__main__":

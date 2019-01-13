@@ -10,7 +10,7 @@ import torch.nn as nn
 from torch.autograd import Variable
 
 class run_classify():
-    def __init__(self, model, params, hyperparams, optimizer, trainloader, valloader, save_path, logger, viz):
+    def __init__(self, model, params, hyperparams, optimizer, trainloader, valloader, save_path, logger):#, viz):
         self.model = model
         self.params = params
         self.hyperparams = hyperparams
@@ -19,7 +19,7 @@ class run_classify():
         self.valloader = valloader
         self.savePath = save_path
         self.logger = logger
-        self.viz = viz
+        #self.viz = viz
 
         self.lossFunc = {}
 
